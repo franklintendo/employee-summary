@@ -34,7 +34,7 @@ const getEmployeeInfo = function() {
     ])
     .then(function(response){
         if (response.role === "Manager") {
-            const newManager = new Manager(response.name, response.id, response.role, response.email);
+            const newManager = new Manager(response.name, response.id, response.email);
 
             inquirer.prompt([
                 {
@@ -53,7 +53,7 @@ const getEmployeeInfo = function() {
             });
         } 
         else if (response.role === "Engineer") {
-            const newEngineer = new Engineer(response.name, response.id, response.role, response.email);
+            const newEngineer = new Engineer(response.name, response.id, response.email);
             inquirer.prompt([
                 {
                     type: "input",
@@ -68,7 +68,7 @@ const getEmployeeInfo = function() {
                 anotherEmployee();
             });
         } else {
-            const newIntern = new Intern(response.name, response.id, response.role, response.email);
+            const newIntern = new Intern(response.name, response.id, response.email);
 
             inquirer.prompt([
                 {
