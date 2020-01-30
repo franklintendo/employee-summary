@@ -3,53 +3,86 @@ const Manager = require("./lib/manager.js");
 const Engineer = require("./lib/engineer.js");
 const Intern = require("./lib/intern.js");
 
+let roleList = ["Manager", "Engineer", "Intern"];
+
 const getEmployeeInfo = function() {
     inquirer
     .prompt([
         {
             type: "input",
-            message: "What is your name?",
+            message: "What is the employee's name?",
             name: "name" 
         }, 
         {
             type: "input",
-            message: "What is your email?",
+            message: "What is the employee's email?",
             name: "email" 
         }, 
         {
             type: "input",
-            message: "What is your id?",
+            message: "What is the employee's id?",
             name: "id"
         },
         {
             type: "list",
-            message: "What is your role?",
+            message: "What is the employee's role?",
             name: "role",
-            choices: ["Manager", "Engineer", "Intern"]
+            choices: roleList
         }
     ])
     .then(function(response){
         if (response.role === "Manager") {
-            const newEmployee = new Manager(response.name, response.id, response.role, response.email);
+            const newManager = new Manager(response.name, response.id, response.role, response.email);
 
             inquirer.prompt([
                 {
                     type: "input",
-                    message: "What is your office number?",
+                    message: "What is the manager's office number?",
                     name: "officeNumber"
                 }
             ]).then(function(managerResponse){
-                newEmployee.officeNumber = managerResponse.officeNumber;
+                newManager.officeNumber = managerResponse.officeNumber;
 
-                console.log(newEmployee);
+                roleList = ["Engineer", "Intern"];
+
+                console.log(newManager);
+                // module.exports = newManager;
                 anotherEmployee();
             });
-            } else if (response.role === "Engineer") {
+        } 
+        else if (response.role === "Engineer") {
+            const newEngineer = new Engineer(response.name, response.id, response.role, response.email);
+            inquirer.prompt([
+                {
+                    type: "input",
+                    message: "What is the engineer's GitHub username?",
+                    name: "github"
+                }
+            ]).then(function(engineerResponse){
+                newEngineer.github = engineerResponse.github;
 
-            } else {
+                console.log(newEngineer);
 
-            }
-        });
+                anotherEmployee();
+            });
+        } else {
+            const newIntern = new Intern(response.name, response.id, response.role, response.email);
+
+            inquirer.prompt([
+                {
+                    type: "input",
+                    message: "What is the intern's school?",
+                    name: "school"
+                }
+            ]).then(function(internResponse){
+                newIntern.school = internResponse.school;
+
+                console.log(newIntern);
+
+                anotherEmployee();
+            });
+        }
+    });
 }
 
 
