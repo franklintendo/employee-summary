@@ -118,12 +118,21 @@ function anotherEmployee() {
         } else {
             employeeData.push(...internData);
 
-            fs.writeFile("./output/test.html", employeeData.join(""), function(err){
+            fs.readFile("./templates/main.html", "utf8", function(err, data){
                 if (err) {
                     return console.log(err);
                   }
-                  console.log("HTML complete.")
+
+                data = data.replace("{{ content }}", employeeData.join(""));
+
+                fs.writeFile("./output/team.html", data, function(err){
+                    if (err) {
+                        return console.log(err);
+                    }
+                    console.log("HTML complete.")
+                });
             });
+            
         }
     })
 }
