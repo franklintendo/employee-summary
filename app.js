@@ -7,6 +7,9 @@ const Intern = require("./lib/intern.js");
 
 let roleList = ["Manager", "Engineer", "Intern"];
 
+const employeeData = [];
+const internData = [];
+
 const getEmployeeInfo = function() {
     inquirer
     .prompt([
