@@ -165,8 +165,8 @@ function createManagerHTML(name, email, id, role, officeNumber) {
           }
         data = data.replace("{{ name }}", name).replace("{{ email }}", email).replace("{{ id }}", id).replace("{{ role }}", role).replace("{{ officeNumber }}", officeNumber);
 
+        // Place Manager html block as first item in the Employees array
         employeeData.unshift(data);
-        // console.log(employeeData);
     });
 }
 
@@ -178,9 +178,9 @@ function createEngineerHTML(name, email, id, role, github) {
             return console.log(err);
           }
         data = data.replace("{{ name }}", name).replace("{{ email }}", email).replace("{{ id }}", id).replace("{{ role }}", role).replace("{{ github }}", github);
-
+        
+        // Place Engineer HTML block at the end of the employee array
         employeeData.push(data);
-        // console.log(employeeData);
     });
 }
 
@@ -193,8 +193,8 @@ function createInternHTML(name, email, id, role, school) {
           }
         data = data.replace("{{ name }}", name).replace("{{ email }}", email).replace("{{ id }}", id).replace("{{ role }}", role).replace("{{ school }}", school);
 
+        // Place intern HTML block at the end of the intern array
         internData.push(data);
-        // console.log(internData);
 
     });
 }
