@@ -4,12 +4,12 @@ const Manager = require("./lib/manager.js");
 const Engineer = require("./lib/engineer.js");
 const Intern = require("./lib/intern.js");
 
-
-
-
+// Array for inquirer choices for roles
 let roleList = ["Manager", "Engineer", "Intern"];
 
+// Array for prompted Manager and Engineer information
 const employeeData = [];
+// Array for prompted Intern information
 const internData = [];
 
 const getEmployeeInfo = function() {
@@ -38,6 +38,8 @@ const getEmployeeInfo = function() {
         }
     ])
     .then(function(response){
+        // If the user selects manager, ask them a manager specific question
+        // and create an instance of a Manager object
         if (response.role === "Manager") {
             const newManager = new Manager(response.name, response.id, response.email);
 
@@ -48,18 +50,23 @@ const getEmployeeInfo = function() {
                     name: "officeNumber"
                 }
             ]).then(function(managerResponse){
+                // Log their office number in the created Manager object
                 newManager.officeNumber = managerResponse.officeNumber;
 
+                // Remove manager from the list of roles to be chosen from
+                // since it is already filled
                 roleList = ["Engineer", "Intern"];
 
-                // console.log(newManager);
-                // module.exports = newManager;
+                // Create HTML block and feed inquirer prompts into it
                 createManagerHTML(newManager.getName(), newManager.getEmail(), newManager.getId(), newManager.getRole(), newManager.getOfficeNumber());
 
+                // Ask user if they would like to add another employee
                 anotherEmployee();
             });
         } 
         else if (response.role === "Engineer") {
+            // If the user selects engineer, ask them an engineer specific question
+            // and create an instance of an Engineer object
             const newEngineer = new Engineer(response.name, response.id, response.email);
             inquirer.prompt([
                 {
@@ -68,14 +75,18 @@ const getEmployeeInfo = function() {
                     name: "github"
                 }
             ]).then(function(engineerResponse){
+                // Log their github username in the created Engineer object
                 newEngineer.github = engineerResponse.github;
 
-                // console.log(newEngineer);
-                
+                // Create HTML block and feed inquirer prompts into it
                 createEngineerHTML(newEngineer.getName(), newEngineer.getEmail(), newEngineer.getId(), newEngineer.getRole(), newEngineer.getGithub());
+
+                // Ask user if they would like to add another employee
                 anotherEmployee();
             });
         } else {
+            // If the user selects intern, ask them an intern specific question
+            // and create an instance of an Intern object
             const newIntern = new Intern(response.name, response.id, response.email);
 
             inquirer.prompt([
@@ -85,11 +96,13 @@ const getEmployeeInfo = function() {
                     name: "school"
                 }
             ]).then(function(internResponse){
+                // Log their school in the created Intern object
                 newIntern.school = internResponse.school;
 
+                // Create HTML block and feed inquirer prompts into it
                 createInternHTML(newIntern.getName(), newIntern.getEmail(), newIntern.getId(), newIntern.getRole(), newIntern.getSchool())
-                // console.log(newIntern);
 
+                // Ask user if they would like to add another employee
                 anotherEmployee();
             });
         }
@@ -116,8 +129,13 @@ function anotherEmployee() {
         if (response.answer === "Yes") {
             getEmployeeInfo();
         } else {
+            // If they are finished adding employees
+            // Then combine the array with the Manager and Engineer HTML blocks
+            // with the Intern HTML blocks array
             employeeData.push(...internData);
 
+            // Read the main template file and replace the placeholder content
+            // with the employee HTML block
             fs.readFile("./templates/main.html", "utf8", function(err, data){
                 if (err) {
                     return console.log(err);
@@ -125,6 +143,7 @@ function anotherEmployee() {
 
                 data = data.replace("{{ content }}", employeeData.join(""));
 
+                // Write the team page
                 fs.writeFile("./output/team.html", data, function(err){
                     if (err) {
                         return console.log(err);
