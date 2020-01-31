@@ -1,7 +1,9 @@
 const inquirer = require("inquirer");
+const fs = require("fs");
 const Manager = require("./lib/manager.js");
 const Engineer = require("./lib/engineer.js");
 const Intern = require("./lib/intern.js");
+
 
 
 
@@ -50,8 +52,10 @@ const getEmployeeInfo = function() {
 
                 roleList = ["Engineer", "Intern"];
 
-                console.log(newManager);
+                // console.log(newManager);
                 // module.exports = newManager;
+                createManagerHTML(newManager.getName(), newManager.getName(), newManager.getId(), newManager.getRole(), newManager.getOfficeNumber());
+
                 anotherEmployee();
             });
         } 
@@ -66,8 +70,9 @@ const getEmployeeInfo = function() {
             ]).then(function(engineerResponse){
                 newEngineer.github = engineerResponse.github;
 
-                console.log(newEngineer);
-
+                // console.log(newEngineer);
+                
+                createEngineerHTML(newEngineer.getName(), newEngineer.getId(), newEngineer.getRole(), newEngineer.getGithub());
                 anotherEmployee();
             });
         } else {
@@ -82,7 +87,8 @@ const getEmployeeInfo = function() {
             ]).then(function(internResponse){
                 newIntern.school = internResponse.school;
 
-                console.log(newIntern);
+                createInternHTML(newIntern.getName(), newIntern.getId(), newIntern.getRole(), newIntern.getSchool())
+                // console.log(newIntern);
 
                 anotherEmployee();
             });
@@ -110,9 +116,59 @@ function anotherEmployee() {
         if (response.answer === "Yes") {
             getEmployeeInfo();
         } else {
+            employeeData.push(...internData);
 
+            fs.writeFile("./output/test.html", employeeData.join(""), function(err){
+                if (err) {
+                    return console.log(err);
+                  }
+                  console.log("HTML complete.")
+            });
         }
     })
+}
+
+// Read Manager HTML file and ascribe inquirer 
+// prompt responses to code
+function createManagerHTML(name, email, id, role, officeNumber) {
+    fs.readFile("./templates/manager.html", "utf8", function(err, data){
+        if (err) {
+            return console.log(err);
+          }
+        data = data.replace("{{ name }}", name).replace("{{ email }}", email).replace("{{ id }}", id).replace("{{ role }}", role).replace("{{ officeNumber }}", officeNumber);
+
+        employeeData.unshift(data);
+        // console.log(employeeData);
+    });
+}
+
+// Read Engineer HTML file and ascribe inquirer 
+// prompt responses to code
+function createEngineerHTML(name, email, id, role, github) {
+    fs.readFile("./templates/engineer.html", "utf8", function(err, data){
+        if (err) {
+            return console.log(err);
+          }
+        data = data.replace("{{ name }}", name).replace("{{ email }}", email).replace("{{ id }}", id).replace("{{ role }}", role).replace("{{ github }}", github);
+
+        employeeData.push(data);
+        // console.log(employeeData);
+    });
+}
+
+// Read Intern HTML file and ascribe inquirer 
+// prompt responses to code
+function createInternHTML(name, email, id, role, school) {
+    fs.readFile("./templates/intern.html", "utf8", function(err, data){
+        if (err) {
+            return console.log(err);
+          }
+        data = data.replace("{{ name }}", name).replace("{{ email }}", email).replace("{{ id }}", id).replace("{{ role }}", role).replace("{{ school }}", school);
+
+        internData.push(data);
+        // console.log(internData);
+
+    });
 }
 
 
