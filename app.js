@@ -54,7 +54,7 @@ const getEmployeeInfo = function() {
 
                 // console.log(newManager);
                 // module.exports = newManager;
-                createManagerHTML(newManager.getName(), newManager.getName(), newManager.getId(), newManager.getRole(), newManager.getOfficeNumber());
+                createManagerHTML(newManager.getName(), newManager.getEmail(), newManager.getId(), newManager.getRole(), newManager.getOfficeNumber());
 
                 anotherEmployee();
             });
@@ -72,7 +72,7 @@ const getEmployeeInfo = function() {
 
                 // console.log(newEngineer);
                 
-                createEngineerHTML(newEngineer.getName(), newEngineer.getId(), newEngineer.getRole(), newEngineer.getGithub());
+                createEngineerHTML(newEngineer.getName(), newEngineer.getEmail(), newEngineer.getId(), newEngineer.getRole(), newEngineer.getGithub());
                 anotherEmployee();
             });
         } else {
@@ -87,7 +87,7 @@ const getEmployeeInfo = function() {
             ]).then(function(internResponse){
                 newIntern.school = internResponse.school;
 
-                createInternHTML(newIntern.getName(), newIntern.getId(), newIntern.getRole(), newIntern.getSchool())
+                createInternHTML(newIntern.getName(), newIntern.getEmail(), newIntern.getId(), newIntern.getRole(), newIntern.getSchool())
                 // console.log(newIntern);
 
                 anotherEmployee();
